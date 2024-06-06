@@ -97,10 +97,9 @@ void loop()
     // Serial.println();
 }
 
-void turnOnLedIfAnyJoystickActivity(bool leftStickDirectionUp, bool leftStickDirectionRight, bool leftStickDirectionDown, bool leftStickDirectionLeft, bool leftStickButton,
-                                   bool rightStickDirectionUp, bool rightStickDirectionRight, bool rightStickDirectionDown, bool rightStickDirectionLeft, bool rightStickButton)
+void turnOnLedIfAnyJoystickActivity(const bool leftStickDirectionUp, const bool leftStickDirectionRight, const bool leftStickDirectionDown, const bool leftStickDirectionLeft, const bool leftStickButton,
+                                    const bool rightStickDirectionUp, const bool rightStickDirectionRight, const bool rightStickDirectionDown, const bool rightStickDirectionLeft, const bool rightStickButton)
 {
-
     if (leftStickDirectionUp || leftStickDirectionRight || leftStickDirectionDown || leftStickDirectionLeft || leftStickButton ||
         rightStickDirectionUp || rightStickDirectionRight || rightStickDirectionDown || rightStickDirectionLeft || rightStickButton)
     {
