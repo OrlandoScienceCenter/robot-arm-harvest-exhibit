@@ -3,11 +3,11 @@
 #include "../.pio/libdeps/esp32-s3-devkitm-1/elapsedMillis/elapsedMillis.h"
 
 // DO NOT USE GPIO 46 according to safe ESP32-S3 pins chart
-constexpr int PIN_ELBOW_UP =                            36;
-constexpr int PIN_ELBOW_DOWN =                          48;
+constexpr int PIN_ELBOW_UP =                            48;
+constexpr int PIN_ELBOW_DOWN =                          36;
 
-constexpr int PIN_SHOULDER_UP =                         21;
-constexpr int PIN_SHOULDER_DOWN =                       47;
+constexpr int PIN_SHOULDER_UP =                         47;
+constexpr int PIN_SHOULDER_DOWN =                       21;
 
 constexpr int PIN_SHOULDER_ROTATE_CLOCKWISE =           37;
 constexpr int PIN_SHOULDER_ROTATE_COUNTERCLOCKWISE =    38;
@@ -143,7 +143,7 @@ void moveShoulderDown()
     Serial.println("Moving shoulder: DOWN!");
 }
 
-void stopShoulder()
+void stopShoulderUpDown()
 {
     digitalWrite(PIN_SHOULDER_DOWN, LOW);
     digitalWrite(PIN_SHOULDER_UP, LOW);
@@ -192,6 +192,27 @@ void stopWristRotation()
     Serial.println("Hand: STOP!");
 }
 
+void shoulderClockwise()
+{
+    digitalWrite(PIN_SHOULDER_ROTATE_COUNTERCLOCKWISE, LOW);
+    digitalWrite(PIN_SHOULDER_ROTATE_CLOCKWISE, HIGH);
+    Serial.println("Moving shoulder: CLOCKWISE!");
+}
+
+void shoulderCounterclockwise()
+{
+    digitalWrite(PIN_SHOULDER_ROTATE_CLOCKWISE, LOW);
+    digitalWrite(PIN_SHOULDER_ROTATE_COUNTERCLOCKWISE, HIGH);
+    Serial.println("Moving shoulder: COUNTERCLOCKWISE!");
+}
+
+void shoulderStopRotation()
+{
+    digitalWrite(PIN_SHOULDER_ROTATE_COUNTERCLOCKWISE, LOW);
+    digitalWrite(PIN_SHOULDER_ROTATE_CLOCKWISE, LOW);
+    Serial.println("Shoulder: STOP!");
+}
+
 void moveRobotArm()
 {
     // Left stick
@@ -203,6 +224,7 @@ void moveRobotArm()
 
     if (incomingData[1] == '1')
     {
+        shoulderClockwise();
         Serial.println("Left stick move: RIGHT!");
     }
 
@@ -215,12 +237,19 @@ void moveRobotArm()
     if (incomingData[0] == '0' &&
         incomingData[2] == '0')
     {
-        stopShoulder();
+        stopShoulderUpDown();
     }
 
     if (incomingData[3] == '1')
     {
+        shoulderCounterclockwise();
         Serial.println("Left stick move: LEFT!");
+    }
+
+    if (incomingData[1] == '0' &&
+        incomingData[3] == '0')
+    {
+        shoulderStopRotation();
     }
 
     if (incomingData[4] == '1')
